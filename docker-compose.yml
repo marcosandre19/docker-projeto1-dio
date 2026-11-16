@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  web:
+    image: webdevops/php-apache:alpine-php7
+    ports:
+      - "4500:80"
+    volumes:
+      - /data/php:/app
+    networks:
+      - rede-apache
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "ADMIN123"
+      MYSQL_DATABDASE: "TesteDocker"
+    ports:
+      - "3306:3606"
+    volumes:
+      - /data/mysql-C:/var/lib/mysql
+    networks:
+      - rede-apache
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_ROOT_PASSWORD: "ADMIN123"
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/php/admin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+    networks:
+      - rede-apache
+
+networks:
+  rede-apache:
+    driver: bridge
